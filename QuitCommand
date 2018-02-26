@@ -1,0 +1,43 @@
+//The command to terminate a connection.
+public class QuitCommand extends Command {
+
+	// Constructor
+	public QuitCommand() {
+
+	}
+
+	// Is the command requested the command required?
+	// Parameters: keyword - the command keyword
+	// Returns: the command required matches this one
+	public boolean matches(String keyword) {
+		if (keyword.equals("QUIT")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// Take the action for the command requested.
+	// Parameters: connection - The connection of which the command came.
+	// user_database - The central database of the server
+	public void perform(Connection connection, Users user_database) {
+		String txt = connection.input().nextLine();
+		String[] arr = txt.split(" ");
+		String user_name = arr[1];
+		if (arr.length != 2) {
+			connection.output().println("Too few/many words. Try again.");
+		} else {
+			User x = user_database.getUser(user_name);
+			if (x != null) {
+				if (x.connected()) {
+					x.disconnect();
+					connection.output().println("Bye.");
+				} else {
+					connection.output().println("User is not connected.");
+				}
+			} else {
+				connection.output().println("User does not exist.");
+			}
+		}
+	}
+}
