@@ -1,5 +1,3 @@
-import java.io.IOException;
-
 //The command to create a new user. 
 public class CreateCommand extends Command {
 
